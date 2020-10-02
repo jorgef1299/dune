@@ -366,7 +366,7 @@ namespace Transports
       }
 
       void
-      parseUsblPosition(const std::string& str, RecvUsblPos& msg)
+      parseUsblPosition(const std::string& str, RecvUsblPos& msg, bool simulation)
       {
         int rv = 0;
         rv = std::sscanf(str.c_str(),
@@ -378,6 +378,10 @@ namespace Transports
         if (rv != 16)
           throw std::runtime_error("invalid format for USBLLONG");
 
+        //Do not correct for declination in simulation profile.  
+        if (simulation)
+          return;
+        
         double n0 = msg.n;
         double e0 = msg.e;
 
